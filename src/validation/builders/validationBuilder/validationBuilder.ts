@@ -1,5 +1,9 @@
 import { FieldValidation } from "../../protocols";
-import { EmailValidator, MinLengthValidator, RequiredFieldValidator } from "../../validators";
+import {
+  EmailValidator,
+  MinLengthValidator,
+  RequiredFieldValidator,
+} from "../../validators";
 
 export class ValidationBuilder {
   private constructor(
@@ -8,28 +12,28 @@ export class ValidationBuilder {
   ) {}
 
   static field(fieldName: string): ValidationBuilder {
-    return new ValidationBuilder(fieldName, []) 
+    return new ValidationBuilder(fieldName, []);
   }
 
   email(): ValidationBuilder {
-    this.validations.push(new EmailValidator(this.fieldName))
+    this.validations.push(new EmailValidator(this.fieldName));
 
-    return this
+    return this;
   }
 
   min(length: number): ValidationBuilder {
-    this.validations.push(new MinLengthValidator(this.fieldName, length))
+    this.validations.push(new MinLengthValidator(this.fieldName, length));
 
-    return this
+    return this;
   }
 
   required(): ValidationBuilder {
-    this.validations.push(new RequiredFieldValidator(this.fieldName))
+    this.validations.push(new RequiredFieldValidator(this.fieldName));
 
-    return this
+    return this;
   }
 
   build(): FieldValidation[] {
-    return this.validations
+    return this.validations;
   }
 }

@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Home from "../factories/pages/home/HomeFactory.vue";
-import Login from "../factories/pages/login/LoginFactory.vue";
+import HomeFactory from "../factories/pages/home/HomeFactory.vue";
+import LoginFactory from "../factories/pages/login/LoginFactory.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: HomeFactory,
   },
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: LoginFactory,
   },
 ];
 

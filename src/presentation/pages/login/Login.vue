@@ -1,27 +1,33 @@
 <script  setup lang="ts">   
-  import { defineProps, ref } from 'vue'
-  const { authentication } = defineProps({
-    authentication: Function
+  import { defineProps, PropType, ref } from 'vue'
+  import { Authentication } from "../../protocols"
+
+  const { authentication, validation } = defineProps({
+    authentication: Object as PropType<Authentication>,
+    validation: Function
   })
 
   const email = ref<string>('')
   const password = ref<string>('')
+  const fieldErrror = ref<string>('')
+  const valid = ref<boolean>(true)
 
-  console.log(authentication);
-  
+  const changeValue = (event: Event) => {
+    const { name, value } = event.target as HTMLInputElement
+    fieldErrror.value = validation.validate(name, value)
+    valid.value = Boolean(validation.validate(name, value))
+  }
 
   const login = async () => {
+
     const params = {
-      email: email.value,
+      login: email.value,
       password: password.value
     }
 
-    console.log(params);
-    
-
     try {
       const response = await authentication.auth(params)
-      console.log(response); 
+      sessionStorage.setItem('token', response.token)
     } catch (error) {
       console.error(error)
     } finally {
@@ -36,13 +42,14 @@
         <form @submit.prevent="login">
           <div>
             <label for="email">email</label>
-            <input type="text" id="email" v-model="email" placeholder="Username" />
+            <input type="text" id="email" name="email" v-model="email" @input="changeValue" placeholder="Username" />
+            <span>{{fieldErrror}}</span>
           </div>
           <div>
             <label for="password">Senha</label>
-            <input type="password" id="password" v-model="password" placeholder="Password" />
+            <input type="password" id="password" name="password" v-model="password" @input="changeValue" placeholder="Password" />
           </div>
-            <button type="submit">Login</button>
+            <button type="submit" :disabled="valid">Login</button>
         </form>
     </div>
 </template>
