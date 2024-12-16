@@ -3,6 +3,7 @@ import { MakeAuthentication } from "../../usecases/AuthenticationFactory";
 import Login from "../../../../presentation/pages/login/Login.vue";
 import { ValidationComposite } from "../../../../validation/composities";
 import { ValidationBuilder } from "../../../../validation/builders";
+import { MakeCurrentAccountAdapter } from "../../cache/currentAccountAdapterFactory";
 
 const validationComposite = ValidationComposite.build([
   ...ValidationBuilder.field("email").required().email().build(),
@@ -12,7 +13,9 @@ const validationComposite = ValidationComposite.build([
 </script>
 <template>
     <Login 
-      :validation="validationComposite"
       :authentication="MakeAuthentication()" 
+      :currentAccount="MakeCurrentAccountAdapter()"
+      :validation="validationComposite"
     />
-</template>
+  </template>
+

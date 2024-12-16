@@ -1,4 +1,6 @@
+const baseUrl = "https://burgerlivery-api.vercel.app";
+
 export const apiRoutes = {
-  login: "https://burgerlivery-api.vercel.app/user/login",
-  orders: "/orders",
+  login: `${baseUrl}/user/login`,
+  orders: `${baseUrl}/orders`,
 };

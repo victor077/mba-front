@@ -1,5 +1,7 @@
 export type AuthenticationModel = {
-  accessToken: string;
+  userName: string;
+  email: string;
+  token: string;
 };
 
 export type AuthenticationParams = {

@@ -1,10 +1,11 @@
 <script  setup lang="ts">   
-  import { defineProps, PropType, ref } from 'vue'
-  import { Authentication } from "../../protocols"
+  import { defineProps, PropType, ref, inject } from 'vue'
+  import { Authentication, Validation } from "../../protocols"
 
-  const { authentication, validation } = defineProps({
+  const { authentication, currentAccount, validation } = defineProps({
     authentication: Object as PropType<Authentication>,
-    validation: Function
+    validation: Object as PropType<Validation>,
+    currentAccount: Function as PropType<any>,
   })
 
   const email = ref<string>('')
@@ -19,15 +20,14 @@
   }
 
   const login = async () => {
-
     const params = {
       login: email.value,
       password: password.value
     }
 
     try {
-      const response = await authentication.auth(params)
-      sessionStorage.setItem('token', response.token)
+      const response = await authentication.auth(params) 
+      currentAccount.set(response)
     } catch (error) {
       console.error(error)
     } finally {

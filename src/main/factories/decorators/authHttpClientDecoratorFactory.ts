@@ -6,7 +6,8 @@ export const MakeAuthHttpClientDecorator = <
   BodyType,
   ResponseType
 >(): HttpClient<BodyType, ResponseType> => {
-  const { token } = JSON.parse(sessionStorage.getItem("token"));
+  const account = sessionStorage.getItem("account");
+  const { token } = account ? JSON.parse(account) : { token: "" };
 
   const authToken = `Bearer ${token}`;
 
