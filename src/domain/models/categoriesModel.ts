@@ -1,5 +1,5 @@
 export type CategoriesModel = {
-  id: string;
-  value: number;
+  id: number;
   text: string;
+  link: string;
 };

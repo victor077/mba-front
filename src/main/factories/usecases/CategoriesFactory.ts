@@ -1,10 +1,11 @@
+import { Categories } from "@/domain";
 import { apiRoutes } from "../../routes/apiRoutes";
-import { MakeAuthHttpClientDecorator } from "../decorators/authHttpClientDecoratorFactory";
-import { MakeApiUrl } from "../http";
+import { MakeApiUrl, MakeAxiosHttpClient } from "../http";
+import { GetCategories } from "@/data";
 
-export const MakeCategories = (): Orders => {
+export const MakeCategories = (): Categories => {
   return new GetCategories(
-    MakeApiUrl(apiRoutes.orders),
-    MakeAuthHttpClientDecorator<Orders.Params, Orders.Model>()
+    MakeApiUrl(apiRoutes.categories),
+    MakeAxiosHttpClient<null, Categories.Model>()
   );
 };

@@ -1,7 +1,7 @@
-import { CategoriesModel } from './../../domain/models/categoriesModel';
 export type CategoriesModel = {
-  value: number;
+  id: number;
   text: string;
+  link: string;
 };
 
 
@@ -11,5 +11,5 @@ export namespace Categories {
 }
 
 export interface Categories {
-  categories(): Promise<Categories.Model>;
+  getCategories(): Promise<Categories.Model[]>;
 }

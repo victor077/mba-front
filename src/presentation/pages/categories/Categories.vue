@@ -1,31 +1,25 @@
-<script>
-  import { Button } from '@/components/ui/button'
-
-import {  Categories  } from "../../protocols"
+<script setup lang="ts">
+import { Categories } from "../../protocols";
+import { defineProps, PropType, onMounted, ref } from "vue";
 
 const { categories } = defineProps({
-    categories: Object as PropType<Categories>
-  })
+  categories: Object as PropType<Categories>,
+});
 
-try {
-      const response = await categories.
-      currentAccount.set(response)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      console.log('finally')
-    }
+const categoryList = ref<Categories.Model[] | undefined>([]);
 
-  export default {
-  components: {
-    Button
+const getListCategories = async () => {
+  try {
+    const response = await categories?.getCategories();
+    categoryList.value = response;
+  } catch (error) {
+    console.error(error);
   }
 };
+
+onMounted(() => {
+  getListCategories();
+});
 </script>
 
-<template>
-  <div>
-    <h1>Categorias</h1>
-    <Button>TESTE</Button>
-  </div>
-</template>
+<template></template>

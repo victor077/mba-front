@@ -13,10 +13,10 @@ import { HttpClient, HttpStatusCode } from "../protocols"
 export class GetCategories implements Categories {
   constructor(
     private readonly url: string,
-    private readonly httpClient: HttpClient<Categories.Model>
+    private readonly httpClient: HttpClient<Categories.Model[]>
   ) {}
 
-  async categories(): Promisse<Categories.Model> {
+  async getCategories(): Promise<Categories.Model[]> {
     const httpResponse = await this.httpClient.request({
       url: `${this.url}`,
       method: "get",
@@ -24,7 +24,7 @@ export class GetCategories implements Categories {
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.Ok:
-        return httpResponse.body as Categories.Model
+        return httpResponse.body as Categories.Model[]
       case HttpStatusCode.Forbidden:
         throw new ForbiddenError()
       case HttpStatusCode.PreconditionFailed:
