@@ -1,3 +1,14 @@
+# Integrantes
+Victor Angelo rm: 354686
+Karla rm: 354183
+Pedro rm: 353398
+Indiara rm: 353665
+
+# como rodar
+- npm i 
+- npm run dev 
+- padrão
+
 # Clean Architecture
 Projeto Frontend utilizando camadas para separação de responsabilidades visando um crescimento ordenado da aplicação.
 Baseado na abordagen do livro Clean Architecture, visando criar um arquitetura para projetos frontend.
