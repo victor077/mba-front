@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "vue-router";
 import logo from "../../assets/images/burger.png";
 import { ShoppingCartIcon } from "lucide-vue-next";
+import { useAuth } from "@/context/auth";
 
 const categories = ["hamburgers", "appetizers", "desserts", "beverages"];
 
 const activeItem = ref<string>("");
 const router = useRouter();
 const token = ref<string | null>(null);
+const { teste } = useAuth();
 
 onMounted(() => {
   token.value = localStorage.getItem("authToken");
@@ -22,8 +24,8 @@ const setActiveItem = (item: string) => {
 const logout = () => {
   localStorage.removeItem("authToken");
   token.value = null;
+  teste.value = false;
   router.push("/");
-  window.location.reload();
 };
 </script>
 

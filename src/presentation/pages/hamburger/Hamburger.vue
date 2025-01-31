@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { CircleCheckIcon } from "lucide-vue-next";
 import { useRouter } from "vue-router";
+import { EmblaCarouselVueType } from "embla-carousel-vue";
 
 const { hamburgers } = defineProps({
   hamburgers: Object as PropType<Hamburgers>,
@@ -42,11 +43,13 @@ const cart = inject("cart") as {
 };
 const router = useRouter();
 
-const plugin = Autoplay({
-  delay: 2000,
-  stopOnMouseEnter: true,
-  stopOnInteraction: false,
-});
+const createAutoplayPlugin = () => {
+  return Autoplay({
+    delay: 2000,
+    stopOnMouseEnter: true,
+    stopOnInteraction: false,
+  });
+};
 
 const hamburgerList = ref<Hamburgers.Model[] | undefined>([]);
 
@@ -107,16 +110,14 @@ const addToCart = (hamburger: Hamburgers.Model, type: string) => {
         <div class="flex justify-center items-center">
           <Carousel
             class="relative w-full max-w-xs"
-            :plugins="[plugin]"
-            @mouseenter="plugin.stop"
-            @mouseleave="
-              [plugin.reset(), plugin.play(), console.log('Running')]
-            "
+            :plugins="[createAutoplayPlugin()]"
+            @mouseenter="(e: any) => e.target.stop()"
+            @mouseleave="(e: any) => e.target.play()"
           >
             <CarouselContent>
               <CarouselItem
-                v-for="image in hamburger.image"
-                :key="hamburger.id"
+                v-for="(image, index) in hamburger.image"
+                :key="`${hamburger.id}-${index}`"
               >
                 <div>
                   <Card>
@@ -139,14 +140,14 @@ const addToCart = (hamburger: Hamburgers.Model, type: string) => {
         <div class="flex items-center justify-between">
           <Dialog v-model:open="isOpen[hamburger.id + '-single']">
             <DialogTrigger as-child>
-              <Butoon
-                @click="addToCart(hamburger, 'signle')"
-                variant="gost"
+              <Button
+                @click="addToCart(hamburger, 'single')"
+                variant="ghost"
                 class="text-lg text-primary font-semibold cursor-pointer"
                 title="Adicionar Lanche simples"
               >
                 R$ {{ hamburger.values.single.toFixed(2) }}
-              </Butoon>
+              </Button>
             </DialogTrigger>
             <DialogContent class="sm:max-w-[425px]">
               <DialogHeader>
