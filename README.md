@@ -8,6 +8,7 @@ Indiara rm: 353665
 - npm i 
 - npm run dev 
 - padrão
+- é preciso ter o projeto burger rodando local
 
 # Clean Architecture
 Projeto Frontend utilizando camadas para separação de responsabilidades visando um crescimento ordenado da aplicação.
