@@ -1,2 +1,2 @@
-export * from "./protocols"
-export * from "./usecases"
+export * from "./protocols";
+export * from "./usecases";

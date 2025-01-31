@@ -1,17 +1,15 @@
 <script setup lang="ts">
+import ShoppingCartProvider from "@/context/ShoppingCartProvider.vue";
 import Header from "@/presentation/componentes/header.vue";
 import HeaderAuth from "@/presentation/componentes/HeaderAuth.vue";
-import { computed, onMounted, ref } from "vue";
+import { useAuth } from "@/context/auth";
 
-const token = ref<string | null>(null);
-onMounted(() => {
-  token.value = localStorage.getItem("authToken");
-});
-
-const isAuthenticated = computed(() => !!token.value);
+const { teste } = useAuth();
 </script>
 
 <template>
-  <component :is="isAuthenticated ? HeaderAuth : Header" />
-  <router-view />
+  <ShoppingCartProvider>
+    <component :is="teste ? HeaderAuth : Header" />
+    <router-view />
+  </ShoppingCartProvider>
 </template>

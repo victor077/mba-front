@@ -7,6 +7,8 @@ import BeverageFactory from "../factories/pages/beverage/BeverageFactory.vue";
 import HamburgerFactory from "../factories/pages/hamburger/HamburgerFactory.vue";
 import AppertizeFactory from "../factories/pages/appertize/AppertizeFactory.vue";
 import DessertFactory from "../factories/pages/dessert/DessertFactory.vue";
+import ShoppingCart from "@/presentation/componentes/ShoppingCart.vue";
+import PaymentsOptionsFactory from "../factories/pages/paymentsOptions/PaymentsOptionsFactory.vue";
 
 const routes = [
   // {
@@ -44,6 +46,16 @@ const routes = [
     path: "/desserts",
     name: "Desserts",
     component: DessertFactory,
+  },
+  // {
+  //   path: "/cart",
+  //   name: "Cart",
+  //   component: ShoppingCart,
+  // },
+  {
+    path: "/cart",
+    name: "PaymentOptions",
+    component: PaymentsOptionsFactory,
   },
 ];
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "vue-router";
 import logo from "../../assets/images/burger.png";
@@ -22,8 +22,8 @@ const setActiveItem = (item: string) => {
 const logout = () => {
   localStorage.removeItem("authToken");
   token.value = null;
-  window.location.reload();
   router.push("/");
+  window.location.reload();
 };
 </script>
 
@@ -38,18 +38,15 @@ const logout = () => {
           <RouterLink
             :to="item"
             @click="setActiveItem(item)"
-            :class="[
-              'hover:text-primary cursor-pointer',
-              activeItem === item ? 'text-primary underline' : '',
-            ]"
+            :class="['hover:text-primary cursor-pointer']"
           >
             {{ item }}
           </RouterLink>
         </li>
       </ul>
       <div class="flex items-center justify-center gap-8">
-        <button class="hover:text-primary">
-          <ShoppingCartIcon class="h-9 w-9" />
+        <button class="hover:text-primary" @click="router.push('/cart')">
+          <ShoppingCartIcon class="h-7 w-7" />
         </button>
         <Button
           class="p-6 border rounded-2xl w-28 font-semibold"

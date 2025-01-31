@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "vue-router";
+import { useAuth } from "@/context/auth";
 
 const { authentication, currentAccount, validation } = defineProps({
   authentication: Object as PropType<Authentication>,
@@ -25,6 +26,7 @@ const password = ref<string>("");
 const fieldErrror = ref<string>("");
 const valid = ref<boolean>(true);
 const router = useRouter();
+const { teste } = useAuth();
 
 const changeValue = (event: Event) => {
   const { name, value } = event.target as HTMLInputElement;
@@ -53,10 +55,11 @@ const login = async () => {
     const response = await authentication.auth(params);
     currentAccount.set(response);
     localStorage.setItem("authToken", response.token);
-    router.push("/hamburgers");
   } catch (error) {
     console.error(error);
   } finally {
+    router.push("/hamburgers");
+    teste.value = true;
     console.log("finally");
   }
 };

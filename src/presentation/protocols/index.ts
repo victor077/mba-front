@@ -5,3 +5,5 @@ export * from "./bevareges";
 export * from "./hamburgers";
 export * from "./appertizes";
 export * from "./desserts";
+export * from "./paymentsOptions";
+export * from "./createOrder";

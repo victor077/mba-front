@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, PropType, onMounted, ref } from "vue";
+import { defineProps, PropType, onMounted, ref, inject } from "vue";
 import { Button } from "@/components/ui/button";
 import { Hamburgers } from "../../protocols";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,10 +12,35 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { handleImageError } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CircleCheckIcon } from "lucide-vue-next";
+import { useRouter } from "vue-router";
 
 const { hamburgers } = defineProps({
   hamburgers: Object as PropType<Hamburgers>,
 });
+
+const cart = inject("cart") as {
+  addToCart: (item: any) => void;
+  cartCount: number;
+  cart: {
+    id: number;
+    title: string;
+    price: number;
+    quantity: number;
+    type?: string | undefined;
+    image: string;
+  }[];
+};
+const router = useRouter();
 
 const plugin = Autoplay({
   delay: 2000,
@@ -44,10 +69,31 @@ const getHamburgers = async () => {
 onMounted(async () => {
   getHamburgers();
 });
+
+const isOpen = ref<Record<string, boolean>>({});
+
+const addToCart = (hamburger: Hamburgers.Model, type: string) => {
+  if (type === "single") {
+    return cart.addToCart({
+      id: hamburger.id,
+      title: hamburger.title,
+      price: hamburger.values.single,
+      image: hamburger.image[0],
+      description: hamburger.description,
+    });
+  }
+  return cart.addToCart({
+    id: hamburger.id,
+    title: hamburger.title,
+    price: hamburger.values.single,
+    image: hamburger.image[1],
+    description: hamburger.description,
+  });
+};
 </script>
 
 <template>
-  <div class="grid md:grid-cols-3 gap-4">
+  <div class="grid md:grid-cols-3 gap-4 pl-56">
     <div v-for="hamburger in hamburgerList" :key="hamburger.id">
       <div
         class="p-6 bg-neutral-950 border rounded-2xl flex flex-col gap-4 h-auto w-[27rem]"
@@ -91,18 +137,68 @@ onMounted(async () => {
           </Carousel>
         </div>
         <div class="flex items-center justify-between">
-          <p
-            class="text-lg text-primary font-semibold cursor-pointer"
-            title="Lanche simples"
-          >
-            R$ {{ hamburger.values.single.toFixed(2) }}
-          </p>
-          <p
-            class="text-lg text-primary font-semibold cursor-pointer"
-            title="Combo"
-          >
-            R$ {{ hamburger.values.combo.toFixed(2) }}
-          </p>
+          <Dialog v-model:open="isOpen[hamburger.id + '-single']">
+            <DialogTrigger as-child>
+              <Butoon
+                @click="addToCart(hamburger, 'signle')"
+                variant="gost"
+                class="text-lg text-primary font-semibold cursor-pointer"
+                title="Adicionar Lanche simples"
+              >
+                R$ {{ hamburger.values.single.toFixed(2) }}
+              </Butoon>
+            </DialogTrigger>
+            <DialogContent class="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle class="flex gap-4 items-center font-bold"
+                  ><CircleCheckIcon class="text-green-600" /> Adicionado ao
+                  carrinho {{ hamburger.title }}</DialogTitle
+                >
+                <DialogDescription>
+                  {{ hamburger.description }}
+                </DialogDescription>
+              </DialogHeader>
+              <img :src="hamburger.image[0]" alt="" @error="handleImageError" />
+              <DialogFooter>
+                <Button
+                  @click="router.push('/cart')"
+                  class="rounded-3xl h-12 w-full"
+                >
+                  Ver carrinho ({{ cart.cartCount }})</Button
+                ></DialogFooter
+              >
+            </DialogContent>
+          </Dialog>
+          <Dialog v-model:open="isOpen[hamburger.id + '-combo']">
+            <DialogTrigger as-child>
+              <Button
+                @click="addToCart(hamburger, 'combo')"
+                class="text-lg text-primary font-semibold cursor-pointer bg-transparent hover:bg-transparent"
+                title="Adicionar combo"
+              >
+                R$ {{ hamburger.values.combo.toFixed(2) }}
+              </Button>
+            </DialogTrigger>
+            <DialogContent class="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle class="flex gap-4 items-center font-bold"
+                  ><CircleCheckIcon class="text-green-600" /> Adicionado ao
+                  carrinho {{ hamburger.title }}</DialogTitle
+                >
+                <DialogDescription>
+                  {{ hamburger.description }}
+                </DialogDescription>
+              </DialogHeader>
+              <img :src="hamburger.image[1]" alt="" @error="handleImageError" />
+              <DialogFooter>
+                <Button
+                  @click="router.push('/cart')"
+                  class="rounded-3xl h-12 w-full"
+                  >Ver carrinho ({{ cart.cartCount }})</Button
+                ></DialogFooter
+              >
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

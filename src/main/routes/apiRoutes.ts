@@ -9,6 +9,8 @@ export const apiRoutes = {
   hamburgers: `${baseUrl}/hamburgers`,
   appetizers: `${baseUrl}/appetizers`,
   desserts: `${baseUrl}/desserts`,
+  options: `${baseUrl}/payment/options`,
+  createOrder: `${baseUrl}/order/create-order`,
 };
 
 console.log("routes", apiRoutes);
